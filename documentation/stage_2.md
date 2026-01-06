@@ -47,9 +47,9 @@
 
 Creating a text file and loading to XFS disk with interface.
 
-1. Starting XFS Interface
+1. Starting XFS Interface.
 ```bash
-z xfs-interface
+cd xfs-interface
 ./xfs-interface
 ```
 
@@ -99,7 +99,7 @@ When a file is created entries are made in the Inode table as well as the Root f
 ./xfs-interface
 copy 5 5 ../root_file.txt
 exit
-z ..
+cd ..
 cat root_file.txt
 ```
 

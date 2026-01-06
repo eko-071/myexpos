@@ -12,7 +12,7 @@ curl -sSf https://raw.githubusercontent.com/eXpOSNitc/expos-bootstrap/main/downl
 
 3. Changed to the directory.
 ```bash
-z myexpos
+cd myexpos
 ```
 
 4. Run 'make' to build the code.
