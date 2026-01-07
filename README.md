@@ -11,7 +11,7 @@ The roadmap is split into 28 stages.
 - [x] [Stage 1 : Setting up the System](documentation/stage_1.md)
 - [x] [Stage 2 : Understanding the Filesystem](documentation/stage_2.md)
 - [x] [Stage 3 : Bootstrap Loader](documentation/stage_3.md)
-- [ ] [Stage 4 : Learning the SPL Language](documentation/stage_4.md)
+- [x] [Stage 4 : Learning the SPL Language](documentation/stage_4.md)
 - [ ] [Stage 5 : XSM Debugging](documentation/stage_5.md)
 - [ ] [Stage 6 : Running a user program](documentation/stage_6.md)
 - [ ] [Stage 7 : ABI and XEXE format](documentation/stage_7.md)

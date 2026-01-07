@@ -37,8 +37,7 @@
 
 1. Create an assembly program to print "Hello World" and save it in `myexpos/spl/spl_progs/helloworld.xsm`. The contents of the file are as such:
 ```bash
-MOV R0, "Hello World"
-MOV R16, R0
+MOV R16, "Hello World"
 PORT P1, R16
 OUT
 HALT 
