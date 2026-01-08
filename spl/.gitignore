@@ -1,4 +1,3 @@
-spl
 tags
 lex.yy.c
 y.tab.c
@@ -8,6 +7,5 @@ y.tab.h
 *.temp
 *.o
 *xsm
-spl_progs/
 .DS_Store
 .vscode/
