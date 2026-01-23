@@ -1,2 +1,17 @@
+//Saving current value of User SP into Process Table
+[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 13] = SP;
+
+//Setting SP to beginning of kernel stack
+SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 11] * 512 - 1;
+
+//Saving user context to kernel stack
+backup;
+
 print "TIMER";
+print [SYSTEM_STATUS_TABLE + 1];
+
+// Restoring user context and setting SP back to user SP
+restore;
+SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1]*16) + 13];
+
 ireturn;

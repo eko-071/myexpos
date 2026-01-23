@@ -6,6 +6,10 @@ loadi(64,14);
 loadi(65,7);
 loadi(66,8);
 
+// INT7 module
+loadi(16,29);
+loadi(17,30);
+
 // INT10 module
 loadi(22,35);
 loadi(23,36);
@@ -51,5 +55,14 @@ PTLR = 10;
 
 [76*512] = [65*512 + 1];
 SP = 8*512;
+
+//User Area Page Number
+[PROCESS_TABLE + 11] = 80;
+
+//Current PID
+[PROCESS_TABLE + 1] = 0;
+
+//Current PID
+[SYSTEM_STATUS_TABLE + 1] = 0;
 
 ireturn;
