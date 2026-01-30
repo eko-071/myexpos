@@ -18,8 +18,8 @@ The roadmap is split into 28 stages.
 - [x] [Stage 8 : Handling Timer Interrupt](documentation/stage_8.md)
 - [x] [Stage 9 : Handling kernel stack](documentation/stage_9.md)
 - [x] [Stage 10 : Console output](documentation/stage_10.md)
-- [ ] [Stage 11 : Introduction to ExpL](documentation/stage_11.md)
-- [ ] [Stage 12 : Introduction to Multiprogramming](documentation/stage_12.md)
+- [x] [Stage 11 : Introduction to ExpL](documentation/stage_11.md)
+- [x] [Stage 12 : Introduction to Multiprogramming](documentation/stage_12.md)
 
 ### Intermediate Stages
 
