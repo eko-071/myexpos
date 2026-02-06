@@ -1,5 +1,3 @@
-breakpoint;
-
 //Saving current value of User SP into Process Table
 [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 13] = SP;
 
@@ -21,15 +19,14 @@ process_table_entry = PROCESS_TABLE + currentPID * 16;
 [process_table_entry + 14] = PTBR;
 [process_table_entry + 15] = PTLR;
 
-// Toggling between the processes
+// Round Robin
 alias newPID R2;
-if(currentPID == 0) then
-	newPID = 1;
-else
+newPID = currentPID + 1;
+if (newPID == 3) then
 	newPID = 0;
 endif;
 
-//Set back Kernel SP, PTBR , PTLR
+//Set back Kernel SP, PTBR, PTLR
 alias new_process_table R3;
 new_process_table = PROCESS_TABLE + newPID * 16;
 SP =  [new_process_table + 11] * 512 + [new_process_table + 12] ;
@@ -42,17 +39,12 @@ PTLR = [new_process_table + 15];
 if([new_process_table + 4] == CREATED) then
 	[new_process_table + 4] = RUNNING;
 	SP = [new_process_table + 13];
-    breakpoint;
 	ireturn;
 endif;
 [new_process_table + 4] = RUNNING;
-
-print "TIMER";
-print [SYSTEM_STATUS_TABLE + 1];
 
 // Restoring user context and setting SP back to user SP
 restore;
 SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1]*16) + 13];
 
-breakpoint;
 ireturn;
