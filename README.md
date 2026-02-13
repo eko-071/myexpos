@@ -24,7 +24,7 @@ The roadmap is split into 28 stages.
 ### Intermediate Stages
 
 - [x] [Stage 13 : Boot Module](documentation/stage_13.md)
-- [ ] [Stage 14 : Round Robin Scheduler](documentation/stage_14.md)
+- [x] [Stage 14 : Round Robin Scheduler](documentation/stage_14.md)
 - [ ] [Stage 15 : Resource Manager Module](documentation/stage_15.md)
 - [ ] [Stage 16 : Console Input](documentation/stage_16.md)
 - [ ] [Stage 17 : Program Loader](documentation/stage_17.md)

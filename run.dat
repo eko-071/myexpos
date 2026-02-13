@@ -2,6 +2,10 @@ load --os ../spl/spl_progs/os_startup.xsm
 load --int=timer ../spl/spl_progs/Interrupt/timer.xsm
 load --idle ../expl/expl_progs/idle.xsm
 load --int=7 ../spl/spl_progs/Interrupt/int_7.xsm
+load --int=10 ../spl/spl_progs/Interrupt/int_10.xsm
+load --module 0 ../spl/spl_progs/Modules/terminal_handler.xsm
+load --module 4 ../spl/spl_progs/Modules/device_manager.xsm
+load --module 5 ../spl/spl_progs/Modules/scheduler.xsm
 load --module 7 ../spl/spl_progs/Modules/boot.xsm
 load --init ../expl/expl_progs/oddnum.xsm
 load --exec ../expl/expl_progs/evennum.xsm
