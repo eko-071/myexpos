@@ -22,6 +22,14 @@ loadi(3,16);
 loadi(4, 17);
 loadi(5, 18);
 
+// Module 0: Device Manager
+loadi(40, 53);
+loadi(41, 54);
+
+// Module 4: Terminal Handler
+loadi(48, 61);
+loadi(49, 62);
+
 // Module 5: Scheduler
 loadi(50,63);
 loadi(51,64);
@@ -122,5 +130,7 @@ while(i < 16) do
     [PROCESS_TABLE + 16*i + 4] = TERMINATED;
     i = i+1;
 endwhile;
+
+[TERMINAL_STATUS_TABLE] = 0;
 
 return;
