@@ -1,0 +1,27 @@
+int main(){
+decl
+    int temp, fd;
+    str buf, fname;
+enddecl
+
+begin
+    write("Filename: ");
+    read(fname);
+
+    fd = exposcall("Open", fname);
+
+    if(fd < 0) then
+        write("cat fail!");
+    else
+        temp = 0;
+        while(temp == 0) do
+            temp = exposcall("Read", fd, buf);
+            if(temp == 0) then
+                write(buf);
+            endif;
+        endwhile;
+    endif;
+
+    return 0;
+end
+}

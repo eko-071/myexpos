@@ -1,0 +1,33 @@
+int main(){
+decl
+    int fd, temp, n;
+    str fname, buf;
+enddecl
+
+begin
+    write("Filename: ");
+    read(fname);
+
+    fd = exposcall("Open", fname);
+
+    if(fd < 0) then
+        write("Open fail");
+    else
+        temp = exposcall("Seek", fd, 2048);
+        n = 2000;
+        while(n <= 2513) do
+            temp = exposcall("Write", fd, n);
+            n = n + 1;
+        endwhile;
+
+        temp = exposcall("Seek", fd, -1);
+        while(temp == 0) do
+            temp = exposcall("Read", fd, buf);
+            write(buf);
+            temp = exposcall("Seek", fd, -2);
+        endwhile;
+    endif;
+
+    return 0;
+end
+}

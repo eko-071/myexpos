@@ -1,0 +1,44 @@
+int main(){
+decl
+    int temp, temp2, fd1, fd2;
+    str src, dest, buf;
+enddecl
+
+begin
+    write("source: ");
+    read(src);
+
+    write("dest: ");
+    read(dest);
+
+    temp = exposcall("Create", dest, 0);
+
+    if(temp == -1) then
+        write("Inode full");
+    else
+        fd1 = exposcall("Open", src);
+        fd2 = exposcall("Open", dest);
+
+        if(fd1 < 0 OR fd2 < 0) then
+            write("cp fail");
+        else
+            temp = 0;
+            while(temp != -2) do
+                temp = exposcall("Read", fd1, buf);
+                if(temp != -2) then
+                    temp2 = exposcall("Write", fd2, buf);
+                    if(temp2 == -3) then
+                        write("Dest permission");
+                        break;
+                    endif;
+                endif;
+            endwhile;
+        endif;
+
+        temp = exposcall("Close", fd1);
+        temp = exposcall("Close", fd2);
+    endif;
+
+    return 0;
+end
+}

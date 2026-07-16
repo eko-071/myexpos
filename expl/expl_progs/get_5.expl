@@ -1,0 +1,22 @@
+decl
+    int array[5];
+enddecl
+
+int main() {
+    decl
+        int temp, i;
+    enddecl
+    begin
+        i = 0;
+        while (i < 5) do
+            temp = exposcall("Read", -1, array[i]);
+            i = i + 1;
+        endwhile;
+        i = 0;
+        while (i < 5) do
+            temp = exposcall("Write", -2, array[i]);
+            i = i + 1;
+        endwhile;
+        return 0;
+    end
+}

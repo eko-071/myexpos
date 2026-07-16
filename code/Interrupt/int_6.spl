@@ -1,0 +1,131 @@
+[PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE+1] + 9] = 7;
+
+alias user_stack R1;
+user_stack = SP;
+
+alias syscall_num R2;  //-5
+alias arg1 R3;  //-4
+alias arg2 R4; //-3
+//arg3
+alias ret_val R5; //-1
+//IP+2
+alias pid R6;
+pid = [SYSTEM_STATUS_TABLE + 1];
+
+syscall_num = [512*[PTBR + 2*(user_stack-5)/512] + (user_stack-5)%512];
+arg1 = [512*[PTBR + 2*(user_stack-4)/512] + (user_stack-4)%512];
+arg2 = [512*[PTBR + 2*(user_stack-3)/512] + (user_stack-3)%512];
+ret_val = 512*[PTBR + 2*(user_stack-1)/512] + (user_stack-1)%512;
+
+[PROCESS_TABLE + 16*pid + 13] = SP;
+SP = [PROCESS_TABLE + 16*pid + 11]*512 - 1; //we don't need the offset
+
+if(arg1 == -1) then  //terminal write
+    multipush(R1, R2, R3, R4, R5, R6);
+    R1 = 4; //read
+    R2 = [SYSTEM_STATUS_TABLE+1];
+    R3 = arg2;  //arg2 is in R4
+    call DEVICE_MANAGER;
+    multipop(R1, R2, R3, R4, R5, R6);
+
+    [ret_val] = 0;
+    goto return_to_user;
+
+else
+    alias resource_table R7;
+    resource_table = [PROCESS_TABLE + 16*pid + 11]*512 + RESOURCE_TABLE_OFFSET;
+
+    if(arg1 < 0 || arg1 >= 8) then
+        [ret_val] = -1;
+        goto return_to_user;
+    endif;
+
+    if([resource_table + 2*arg1] != FILE) then
+        [ret_val] = -1;
+        goto return_to_user;
+    endif;
+
+    alias open_file_index R8;
+    open_file_index = [resource_table + 2*arg1 + 1];
+
+    alias inode_index R9;
+    inode_index = [OPEN_FILE_TABLE + 4*open_file_index + 0];
+
+    multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9);
+    R1 = 4;  //acquire inode
+    R2 = inode_index;
+    R3 = pid;
+    call RESOURCE_MANAGER;
+    multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9);
+
+    if(R0 == -1) then
+        [ret_val] = -1;
+        goto return_to_user;
+    endif;
+
+    alias lseek R10;
+    lseek = [OPEN_FILE_TABLE + 4*open_file_index + 2];
+
+    alias buffer_phy_addr R11;
+    buffer_phy_addr = [PTBR + 2*arg2/512]*512 + (arg2%512);
+
+    if(inode_index == INODE_ROOT) then
+        if(lseek == 480) then //lseek is equal to root file ka size
+            multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11);
+            R1 = 5; //release inode
+            R2 = inode_index;
+            R3 = pid;
+            call RESOURCE_MANAGER;
+            multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11);
+            
+            [ret_val] = -2;
+            goto return_to_user;
+        endif;
+
+        [buffer_phy_addr] = [ROOT_FILE + lseek];
+        [OPEN_FILE_TABLE + 4*open_file_index + 2] = lseek+1;
+
+    else 
+        if(lseek == [INODE_TABLE + 16*inode_index + 2]) then //lseek is equal to file ka size
+            multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11);
+            R1 = 5; //release inode
+            R2 = inode_index;
+            R3 = pid;
+            call RESOURCE_MANAGER;
+            multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11);
+            
+            [ret_val] = -2;
+            goto return_to_user;
+        endif;
+        
+        alias block_no R12;
+        block_no = [INODE_TABLE + 16*inode_index + 8 + (lseek/512)];
+
+        multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12);
+        R1 = 2;  //buffered read
+        R2 = block_no;
+        R3 = lseek%512;  //offset
+        R4 = buffer_phy_addr;
+        call FILE_MANAGER;
+        multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12);
+
+        [OPEN_FILE_TABLE + 4*open_file_index + 2] = lseek+1;
+    endif;
+
+    
+    multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12);
+    R1 = 5; //release inode
+    R2 = inode_index;
+    R3 = pid;
+    call RESOURCE_MANAGER;
+    multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12);
+    
+    [ret_val] = 0;
+    goto return_to_user;
+
+endif;
+
+return_to_user:
+    [PROCESS_TABLE + 16*pid + 9] = 0;
+    SP = user_stack;
+    ireturn;

@@ -1,0 +1,41 @@
+alias curr_process R0;
+curr_process = [SYSTEM_STATUS_TABLE+1];
+
+multipush(BP);
+
+R1 = PROCESS_TABLE + 16*curr_process; //efficiency
+
+[R1 + 12] = SP%512;
+//user stack has already been saved in timer interrupt
+[R1 + 14] = PTBR;
+[R1 + 15] = PTLR;
+
+curr_process = (curr_process+1)%16;
+
+while(
+[PROCESS_TABLE + 16*curr_process + 4] != READY
+&&
+[PROCESS_TABLE + 16*curr_process + 4] != CREATED
+) do
+    curr_process = (curr_process+1)%16;
+endwhile;
+
+R1 = PROCESS_TABLE + 16*curr_process; //efficiency
+
+SP = 512*[R1 + 11] + [R1 + 12];
+PTBR = [R1 + 14];
+PTLR = [R1 + 15];
+
+[SYSTEM_STATUS_TABLE + 1] = curr_process;
+
+if([R1 + 4] == CREATED) then
+    SP = [PROCESS_TABLE + 16*curr_process + 13];
+    BP = [[PROCESS_TABLE + 16*curr_process + 11]*512]; //This value will be set by fork system call
+    [R1 + 4] = RUNNING;
+    [R1 + 9] = 0; //mode flag
+    ireturn;
+endif;
+
+[R1 + 4] = RUNNING;
+multipop(BP);
+return;

@@ -25,22 +25,22 @@ The roadmap is split into 28 stages.
 
 - [x] [Stage 13 : Boot Module](documentation/stage_13.md)
 - [x] [Stage 14 : Round Robin Scheduler](documentation/stage_14.md)
-- [ ] [Stage 15 : Resource Manager Module](documentation/stage_15.md)
-- [ ] [Stage 16 : Console Input](documentation/stage_16.md)
-- [ ] [Stage 17 : Program Loader](documentation/stage_17.md)
-- [ ] [Stage 18 : Disk Interrupt Loader](documentation/stage_18.md)
-- [ ] [Stage 19 : Exception Handler](documentation/stage_19.md)
+- [x] [Stage 15 : Resource Manager Module](documentation/stage_15.md)
+- [x] [Stage 16 : Console Input](documentation/stage_16.md)
+- [x] [Stage 17 : Program Loader](documentation/stage_17.md)
+- [x] [Stage 18 : Disk Interrupt Loader](documentation/stage_18.md)
+- [x] [Stage 19 : Exception Handler](documentation/stage_19.md)
 
 ### Advanced Stages
 
-- [ ] [Stage 20 : Process Creation and Termination](documentation/stage_20.md)
-- [ ] [Stage 21 : Process Synchronization](documentation/stage_21.md)
-- [ ] [Stage 22 : Semaphores](documentation/stage_22.md)
-- [ ] [Stage 23 : File Creation and Deletion](documentation/stage_23.md)
-- [ ] [Stage 24 : File Read](documentation/stage_24.md)
-- [ ] [Stage 25 : File Write](documentation/stage_25.md)
-- [ ] [Stage 26 : User Management](documentation/stage_26.md)
-- [ ] [Stage 27 : Pager Module](documentation/stage_27.md)
+- [x] [Stage 20 : Process Creation and Termination](documentation/stage_20.md)
+- [x] [Stage 21 : Process Synchronization](documentation/stage_21.md)
+- [x] [Stage 22 : Semaphores](documentation/stage_22.md)
+- [x] [Stage 23 : File Creation and Deletion](documentation/stage_23.md)
+- [x] [Stage 24 : File Read](documentation/stage_24.md)
+- [x] [Stage 25 : File Write](documentation/stage_25.md)
+- [x] [Stage 26 : User Management](documentation/stage_26.md)
+- [x] [Stage 27 : Pager Module](documentation/stage_27.md)
 - [ ] [Stage 28 : Multi-Core Extension](documentation/stage_28.md)
 
 ## Notes

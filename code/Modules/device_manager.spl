@@ -1,0 +1,95 @@
+alias ret_val R0;
+alias func_num R1;
+alias curr_pid R2;
+alias arg2 R3;
+alias arg3 R4;
+
+if(func_num == 1) then //disk store
+    multipush(R1, R2, R3, R4);
+    R1 = 3; //acquire disk
+    R2 = curr_pid;
+    call RESOURCE_MANAGER;
+    multipop(R1, R2, R3, R4);
+
+    [DISK_STATUS_TABLE + 1] = 1; //store
+    [DISK_STATUS_TABLE + 2] = arg2; //page
+    [DISK_STATUS_TABLE + 3] = arg3; //block
+
+    store(arg2,arg3);
+
+    [PROCESS_TABLE + 16*curr_pid + 4] = WAIT_DISK;
+
+    multipush(R0, R1, R2, R3, R4);
+    call SCHEDULER;
+    multipop(R0, R1, R2, R3, R4);
+
+    return;
+endif;
+
+if(func_num == 2) then //disk load
+    multipush(R0, R1, R2, R3, R4);
+    R1 = 3; //acquire disk
+    R2 = curr_pid;
+    call RESOURCE_MANAGER;
+    multipop(R0, R1, R2, R3, R4);
+
+    [DISK_STATUS_TABLE + 1] = 0; //load
+    [DISK_STATUS_TABLE + 2] = arg2; //page
+    [DISK_STATUS_TABLE + 3] = arg3; //block
+    
+    load(arg2,arg3);
+
+    [PROCESS_TABLE + 16*curr_pid + 4] = WAIT_DISK;
+
+    multipush(R0, R1, R2, R3, R4);
+    call SCHEDULER;
+    multipop(R0, R1, R2, R3, R4);
+
+    return;
+endif;
+
+if(func_num == 3) then  //terminal write
+    multipush(R0, R1, R2, R3);
+    R1 = 8; //acquire terminal
+    //R2 will be same
+    call RESOURCE_MANAGER;
+    //ignore R0 as acquire_terminal() doesn't have return value
+    multipop(R0, R1, R2, R3);
+
+    print R3;
+
+    multipush(R0, R1, R2, R3);
+    R1 = 9;  //release terminal
+    //R2 will be same
+    call RESOURCE_MANAGER;
+    R4 = R0; //save return value
+    multipop(R0, R1, R2, R3);
+    R0 = R4; //Return value should be in R0
+    return;
+endif;
+
+if(func_num == 4) then  //terminal read
+    multipush(R0, R1, R2, R3);
+    R1 = 8;  //acquire terminal
+    //R2 remains same
+
+    call RESOURCE_MANAGER;
+
+    multipop(R0, R1, R2, R3);
+
+    read;
+
+    [PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE+1] + 4] = WAIT_TERMINAL;
+
+    //calling scheduler
+
+    multipush(R0, R1, R2, R3);
+    call SCHEDULER;
+    multipop(R0, R1, R2, R3);
+
+    //compute physical address for return value
+
+    R4 = 512*[PTBR + 2*arg2/512] + arg2%512;
+    [R4] = [PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE+1] + 8];
+    return;
+endif;

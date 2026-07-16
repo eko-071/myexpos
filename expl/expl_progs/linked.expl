@@ -1,0 +1,46 @@
+type 
+	list {
+		int val;
+		list next;
+	}
+endtype
+
+decl
+	list head, node, tempnode;
+enddecl
+
+
+int main()
+{
+decl
+	int i, n, temp, x;
+enddecl
+begin
+	breakpoint;
+	temp = initialize();
+	
+	temp = exposcall("Write", -2, "n :");
+	
+	temp = exposcall("Read", -1, n);
+	head = alloc();
+	tempnode = head;
+	i = 0;
+	while (i < n) do
+		node = alloc(); 
+		temp = exposcall("Read", -1, x);
+		node.val = x;
+		tempnode.next = node;
+		tempnode = node;
+		i = i + 1;
+	endwhile;
+	temp = exposcall("Write", -2, "LL:");
+	head = head.next;
+	i = 0;
+	while (i < n) do
+		temp = exposcall("Write", -2, head.val);
+		head = head.next;
+		i = i + 1;
+        endwhile;
+	return 0;
+end
+}

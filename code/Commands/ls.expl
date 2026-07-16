@@ -1,0 +1,27 @@
+int main(){
+decl
+    int temp, n, fd;
+    str fname;
+enddecl
+
+begin
+    n = 0;
+    
+    fd = exposcall("Open", "root");
+
+    if(fd < 0) then
+        write("ls fail!");
+    else
+        while(n < 60) do
+            temp = exposcall("Read", fd, fname);
+            temp = exposcall("Seek", fd, 7);
+            if(fname != "-1") then
+                write(fname);
+            endif;
+            n = n+1;
+        endwhile;
+    endif;
+
+    return 0;
+end
+}

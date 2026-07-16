@@ -1,0 +1,12 @@
+int main() {
+    decl
+        int temp;
+        str fname;
+    enddecl
+    begin
+        temp = exposcall("Write", -2, "Reached here");
+        temp = exposcall("Exec", "random.xsm");
+        temp = exposcall("Write", -2, "Reached here");
+        return 0;
+    end
+}

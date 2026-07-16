@@ -1,0 +1,43 @@
+int main(){
+decl
+    int fd, permission, temp, n;
+    str buf, fname;
+enddecl
+
+begin
+    write("Filename: ");
+    read(fname);
+
+    write("Permission: ");
+    read(permission);
+
+    temp = exposcall("Create", fname, permission);
+
+    if(temp != 0) then
+        write("Create fail");
+    else
+        fd = exposcall("Open", fname);
+        
+        if(fd < 0) then
+            write("Open fail");
+        else
+            n = 1;
+            while(n <= 1100) do
+                temp = exposcall("Write", fd, n);
+                n = n + 1;
+            endwhile;
+
+            write("Written");
+
+            temp = exposcall("Seek", fd, -1);
+            while(temp >= 0) do
+                temp = exposcall("Read", fd, buf);
+                write(buf);
+                temp = exposcall("Seek", fd, -2);
+            endwhile;
+        endif;
+    endif;
+
+    return 0;
+end
+}

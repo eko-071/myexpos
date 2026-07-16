@@ -6,7 +6,7 @@ int main()
     begin
         a=0;
         while(a < 200) do
-            a = exposcall("Write", -2, "FAHAD");
+            a = 1;
         endwhile;
         return 0;
     end

@@ -1,0 +1,67 @@
+type
+    ll{
+        int data;
+        ll next;
+    }
+endtype
+
+decl
+    ll createNode(int data);
+    ll head;
+enddecl
+
+ll createNode(int data){
+decl
+    ll node;
+    int temp;
+enddecl
+begin
+    node = alloc();
+    node.data = data;
+    node.next = null;
+    return node;
+end
+}
+
+int main(){
+decl
+    int temp, n, i, data;
+    str out;
+    ll tail, tempNode;
+enddecl
+begin
+    temp = initialize();
+    head = alloc();
+    tail = alloc();
+    tempNode = alloc();
+    
+    head = null;
+    tail = null;
+
+    out = "enter n";
+    write(out);
+    read(n);
+    
+    i = 0;
+    while(i < n) do
+        read(data);
+        tempNode = createNode(data);
+        if(head == null) then
+            tail = tempNode;
+            head = tempNode;
+        else
+            tail.next = tempNode;
+            tail = tail.next;
+        endif;
+        i = i+1;
+    endwhile;
+
+    tempNode = head;
+    while(tempNode != null) do
+        write(tempNode.data);
+        tempNode = tempNode.next;
+    endwhile;
+
+    return 0;
+end
+}

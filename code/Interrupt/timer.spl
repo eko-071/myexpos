@@ -1,0 +1,18 @@
+//alias curr_pid R0;
+//curr_pid = [SYSTEM_STATUS_TABLE+1];
+
+[PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE+1] + 13] = SP;
+SP = 512 * [PROCESS_TABLE + 16 * [SYSTEM_STATUS_TABLE+1] + 11]; //Don't really need the offset
+
+backup;
+
+[PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE+1] + 4] = READY;
+
+call SCHEDULER;
+
+restore;
+
+SP = [PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE+1] + 13];
+[PROCESS_TABLE + 16*[SYSTEM_STATUS_TABLE + 1] + 9] = 0;
+
+ireturn;

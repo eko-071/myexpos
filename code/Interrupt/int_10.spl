@@ -1,0 +1,17 @@
+alias pid R0;
+pid = [SYSTEM_STATUS_TABLE + 1];
+
+alias mode_flag R1;
+mode_flag = [PROCESS_TABLE + 16*pid + 9];
+
+[PROCESS_TABLE + 16*pid + 9] = 10; //exit syscall
+SP = [PROCESS_TABLE + 16*pid + 11]*512 - 1;
+
+multipush(R0, R1);
+R1 = 3; //exit process
+R2 = pid; //pid is R0
+call PROCESS_MANAGER;
+multipop(R0, R1);
+
+call SCHEDULER;
+return;
